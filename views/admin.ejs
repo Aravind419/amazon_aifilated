@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - Amazon Affiliate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body id="admin-page">
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/">Amazon Affiliate</a>
+        <nav>
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link active" href="/admin">Admin</a>
+          <label class="theme-toggle" title="Toggle theme">
+            <input id="themeToggle" type="checkbox" />
+            <span class="switch"><span class="dot"></span></span>
+          </label>
+          <form method="POST" action="/logout" style="display: inline">
+            <button class="nav-link btn-as-link" type="submit">Logout</button>
+          </form>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container admin">
+      <section class="admin-section">
+        <h1>Add Product</h1>
+        <form
+          class="card"
+          method="POST"
+          action="/admin/products"
+          enctype="multipart/form-data">
+          <div class="form-grid">
+            <label>
+              <span>Title</span>
+              <input
+                name="title"
+                type="text"
+                placeholder="Product title"
+                required />
+            </label>
+            <label>
+              <span>Image URL</span>
+              <input name="imageUrl" type="url" placeholder="https://..." />
+            </label>
+            <label class="full">
+              <span>Or Upload Image</span>
+              <div id="fileDrop" class="file-drop">
+                <div class="file-input-wrap">
+                  <label class="file-button">Choose file</label>
+                  <input
+                    id="imageFile"
+                    name="imageFile"
+                    type="file"
+                    accept="image/*" />
+                </div>
+                <div class="file-hint">
+                  Drag & drop an image here, or click to browse
+                </div>
+              </div>
+            </label>
+            <label>
+              <span>Amazon Affiliate Link</span>
+              <input
+                name="affiliateUrl"
+                type="url"
+                placeholder="https://www.amazon.com/..."
+                required />
+            </label>
+            <label>
+              <span>Price </span>
+              <input
+                name="price"
+                type="number"
+                step="0.01"
+                placeholder="e.g. 29.99" />
+            </label>
+          </div>
+          <label class="full">
+            <span>Description</span>
+            <textarea
+              name="description"
+              rows="3"
+              placeholder="Short description (optional)"></textarea>
+          </label>
+          <button class="btn btn-primary" type="submit">Add Product</button>
+        </form>
+      </section>
+
+      <section class="admin-section">
+        <h2>Existing Products</h2>
+        <div id="admin-delete-list" class="grid">
+          <% if (products && products.length) { %> <% products.forEach(function
+          (p) { %>
+          <article class="product-card">
+            <div class="image-wrap">
+              <img src="<%= p.imageUrl %>" alt="<%= p.title %>" />
+            </div>
+            <div class="product-body">
+              <h3 class="product-title"><%= p.title %></h3>
+              <% if (typeof p.price === 'number') { %>
+              <p class="price">₹<%= p.price.toFixed(2) %></p>
+              <% } %>
+              <div class="admin-actions">
+                <a
+                  class="btn btn-secondary"
+                  href="<%= p.affiliateUrl %>"
+                  target="_blank"
+                  rel="nofollow sponsored noopener"
+                  >View Link</a
+                >
+                <button
+                  class="btn btn-danger delete-btn"
+                  data-id="<%= p._id %>">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </article>
+          <% }); %> <% } else { %>
+          <p class="empty">No products added yet.</p>
+          <% } %>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>Admin panel</p>
+      </div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amazon Affiliate Products</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/">Amazon Affiliate</a>
+        <nav>
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/admin">Admin</a>
+          <label class="theme-toggle" title="Toggle theme">
+            <input id="themeToggle" type="checkbox" />
+            <span class="switch"><span class="dot"></span></span>
+          </label>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="container">
+        <h1 class="hero-title">Top Picks, Hand‑Curated</h1>
+        <p class="hero-subtitle">
+          Browse trending products and buy via our Amazon affiliate links.
+        </p>
+        <form
+          id="searchForm"
+          action="/"
+          method="GET"
+          style="
+            margin-top: 16px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+          ">
+          <input
+            id="searchInput"
+            type="text"
+            name="q"
+            value="<%= typeof q !== 'undefined' ? q : '' %>"
+            placeholder="Search products..."
+            autocomplete="off"
+            style="min-width: 260px" />
+          <button class="btn btn-secondary" type="submit">Search</button>
+        </form>
+      </div>
+    </section>
+
+    <main class="container">
+      <div id="productsGrid" class="grid">
+        <% if (products && products.length) { %> <% products.forEach(function
+        (p) { %>
+        <article class="product-card fade-up">
+          <div class="image-wrap shimmer">
+            <img src="<%= p.imageUrl %>" alt="<%= p.title %>" loading="lazy" />
+          </div>
+          <div class="product-body">
+            <h3 class="product-title"><%= p.title %></h3>
+            <% if (p.description) { %>
+            <p class="product-desc"><%= p.description %></p>
+            <% } %>
+            <div class="product-footer">
+              <% if (typeof p.price === 'number') { %>
+              <span class="price">₹<%= p.price.toFixed(2) %></span>
+              <% } %>
+              <a
+                class="btn btn-primary"
+                href="<%= p.affiliateUrl %>"
+                target="_blank"
+                rel="nofollow sponsored noopener">
+                Buy on Amazon
+              </a>
+            </div>
+          </div>
+        </article>
+        <% }); %> <% } else { %>
+        <p class="empty">No products yet. Check back soon!</p>
+        <% } %>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>As an Amazon Associate, we earn from qualifying purchases.</p>
+      </div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+  </body>
+</html>

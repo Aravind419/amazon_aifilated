@@ -1,0 +1,25 @@
+# Node
+node_modules/
+.npm/
+
+# Env
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Uploads (ignore generated images but keep folder)
+public/uploads/*
+!public/uploads/.gitkeep

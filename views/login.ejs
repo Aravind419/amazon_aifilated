@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - Amazon Affiliate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/">Amazon Affiliate</a>
+        <nav>
+          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/login">Login</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container" style="max-width: 520px; padding: 28px 0 60px">
+      <h1>Admin Login</h1>
+      <form id="loginForm" class="card" method="POST" action="/login">
+        <% if (error) { %>
+        <div class="alert-danger shake"><%= error %></div>
+        <% } %>
+        <label class="full">
+          <span>Email</span>
+          <input
+            type="email"
+            name="email"
+            placeholder="Admin's email"
+            required />
+        </label>
+        <label class="full">
+          <span>Password</span>
+          <input
+            type="password"
+            name="password"
+            placeholder="Admin's password"
+            required />
+        </label>
+        <button class="btn btn-primary" type="submit">Login</button>
+      </form>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>Admin access only</p>
+      </div>
+    </footer>
+
+    <script src="/js/app.js"></script>
+  </body>
+</html>
