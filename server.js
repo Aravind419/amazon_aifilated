@@ -197,7 +197,7 @@ app.get("/login", (req, res) => {
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await AdminUser.findOne({ email }).exec();
+    const user = await AdminUser.findOne({ email: { $eq: email } }).exec();
     if (!user)
       return res.status(401).render("login", { error: "Invalid credentials" });
     const ok = await bcrypt.compare(password, user.passwordHash);
