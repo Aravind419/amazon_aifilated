@@ -121,7 +121,7 @@ app.get("/", async (req, res) => {
 });
 
 // Realtime search API
-app.get("/api/products", async (req, res) => {
+app.get("/api/products", productsApiLimiter, async (req, res) => {
   try {
     const q = (req.query.q || "").trim();
     const filter = q
