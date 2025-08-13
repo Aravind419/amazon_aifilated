@@ -10,6 +10,7 @@ const MongoStore = require("connect-mongo");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
 const fs = require("fs");
+const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 
 const Product = require("./models/Product");
@@ -178,7 +179,7 @@ app.post(
   }
 );
 
-app.delete("/admin/products/:id", requireAuth, async (req, res) => {
+app.delete("/admin/products/:id", requireAuth, deleteProductLimiter, async (req, res) => {
   try {
     const { id } = req.params;
     await Product.findByIdAndDelete(id);
@@ -191,7 +192,6 @@ app.delete("/admin/products/:id", requireAuth, async (req, res) => {
   }
 });
 
-// Auth routes
 app.get("/login", (req, res) => {
   if (req.session && req.session.userId) return res.redirect("/admin");
   res.render("login", { error: null });
