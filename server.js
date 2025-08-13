@@ -11,6 +11,7 @@ const bcrypt = require("bcryptjs");
 const multer = require("multer");
 const fs = require("fs");
 const rateLimit = require("express-rate-limit");
+const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 
 const Product = require("./models/Product");
@@ -179,7 +180,14 @@ app.post(
   }
 );
 
-app.delete("/admin/products/:id", requireAuth, deleteProductLimiter, async (req, res) => {
+// Rate limiter for product deletion: max 10 requests per hour per IP
+const deleteProductRateLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10, // limit each IP to 10 delete requests per windowMs
+  message: "Too many delete requests from this IP, please try again after an hour"
+});
+
+app.delete("/admin/products/:id", requireAuth, deleteProductRateLimiter, async (req, res) => {
   try {
     const { id } = req.params;
     await Product.findByIdAndDelete(id);
