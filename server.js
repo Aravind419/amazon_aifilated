@@ -34,7 +34,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
-    cookie: { maxAge: 1000 * 60 * 60 * 8 },
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 8,
+      secure: process.env.NODE_ENV === "production",
+    },
   })
 );
 
