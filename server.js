@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
+const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const compression = require("compression");
@@ -205,7 +206,7 @@ app.get("/login", (req, res) => {
   res.render("login", { error: null });
 });
 
-app.post("/login", async (req, res) => {
+app.post("/login", loginRateLimiter, async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await AdminUser.findOne({ email: { $eq: email } }).exec();
@@ -220,6 +221,13 @@ app.post("/login", async (req, res) => {
     console.error(e);
     res.status(500).render("login", { error: "Something went wrong" });
   }
+});
+
+// Rate limiter for login attempts: max 5 requests per 15 minutes per IP
+const loginRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // limit each IP to 5 login requests per windowMs
+  message: "Too many login attempts from this IP, please try again after 15 minutes"
 });
 
 app.post("/logout", (req, res) => {
